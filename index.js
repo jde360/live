@@ -68,7 +68,7 @@ app.post('/broadcast', async (req, res) => {
         await peer.setRemoteDescription(desc);
         const answer = await peer.createAnswer();
         await peer.setLocalDescription(answer);
-
+        console.log("answer", answer);
 
         res.json(peer.localDescription);
     } catch (error) {
