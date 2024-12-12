@@ -25,8 +25,10 @@ app.post("/consumer", async (req, res) => {
                         'stun:stun1.l.google.com:19302',
                         'stun:stun2.l.google.com:19302'
                     ]
-                }
-            ]
+                },
+
+            ],
+            iceTransportPolicy: "relay"
         });
         const desc = new webrtc.RTCSessionDescription(offer);
         await peer.setRemoteDescription(desc);
@@ -59,7 +61,9 @@ app.post('/broadcast', async (req, res) => {
                         'stun:stun2.l.google.com:19302'
                     ]
                 }
-            ]
+
+            ],
+            iceTransportPolicy: "relay"
         });
         peer.ontrack = (e) => handleTrackEvent(e, peer);
         const desc = new webrtc.RTCSessionDescription(offer);
