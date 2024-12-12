@@ -62,13 +62,14 @@ app.post('/broadcast', async (req, res) => {
                     ]
                 },
                 {
-                    urls: 'turn:3.111.40.187:3478',
-                    username: 'jiturn',
-                    credential: 'jiturnpass',
-                },
-
+                    'urls': [
+                        'turn:3.111.40.187:3478',  // TURN over UDP
+                        'turns:3.111.40.187:5349' // TURN over TLS
+                    ],
+                    'username': 'jiturn',
+                    'credential': 'jiturnpass',
+                }
             ],
-            iceTransportPolicy: "relay"
         });
         peer.ontrack = (e) => handleTrackEvent(e, peer);
         peer.onicecandidate = (event) => {
