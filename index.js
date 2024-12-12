@@ -44,7 +44,7 @@ app.post("/consumer", async (req, res) => {
 
 app.post('/broadcast', async (req, res) => {
     try {
-
+        console.log("request for start a broadcast");
         const sdp = req.body.offer;
         const offer = {
             sdp: sdp,
@@ -66,8 +66,6 @@ app.post('/broadcast', async (req, res) => {
         await peer.setRemoteDescription(desc);
         const answer = await peer.createAnswer();
         await peer.setLocalDescription(answer);
-        console.log("answer", answer);
-
         res.json(peer.localDescription);
     } catch (error) {
         console.log(error);
