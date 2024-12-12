@@ -60,7 +60,12 @@ app.post('/broadcast', async (req, res) => {
                         'stun:stun1.l.google.com:19302',
                         'stun:stun2.l.google.com:19302'
                     ]
-                }
+                },
+                {
+                    urls: 'turn:3.111.40.187:3478',
+                    username: 'jiturn',
+                    credential: 'jiturnpass',
+                },
 
             ],
             iceTransportPolicy: "relay"
