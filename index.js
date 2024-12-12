@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
 app.post("/consumer", async (req, res) => {
     try {
         const sdp = req.body.offer;
+        console.log("CONSUMER\n::::::::::::::::::::::::::::::::\n", sdp);
         const offer = {
             sdp: sdp,
             type: "offer",
@@ -57,7 +58,8 @@ app.post("/consumer", async (req, res) => {
 
 app.post('/broadcast', async (req, res) => {
     try {
-        console.log("request for start a broadcast");
+        console.log("ASTROLOGER\n::::::::::::::::::::::::::::::::\n", sdp);
+
         const sdp = req.body.offer;
         const offer = {
             sdp: sdp,
