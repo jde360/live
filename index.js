@@ -66,6 +66,11 @@ app.post('/broadcast', async (req, res) => {
             iceTransportPolicy: "relay"
         });
         peer.ontrack = (e) => handleTrackEvent(e, peer);
+        peer.onicecandidate = (event) => {
+            if (event.candidate) {
+                console.log("New ICE Candidate:", event.candidate.candidate);
+            }
+        };
         const desc = new webrtc.RTCSessionDescription(offer);
         await peer.setRemoteDescription(desc);
         const answer = await peer.createAnswer();
