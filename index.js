@@ -26,9 +26,15 @@ app.post("/consumer", async (req, res) => {
                         'stun:stun2.l.google.com:19302'
                     ]
                 },
-
+                {
+                    'urls': [
+                        'turn:3.111.40.187:3478',  // TURN over UDP
+                        'turns:3.111.40.187:5349' // TURN over TLS
+                    ],
+                    'username': 'jiturn',
+                    'credential': 'jiturnpass',
+                }
             ],
-            iceTransportPolicy: "relay"
         });
         const desc = new webrtc.RTCSessionDescription(offer);
         await peer.setRemoteDescription(desc);
