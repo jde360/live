@@ -36,6 +36,11 @@ app.post("/consumer", async (req, res) => {
                 }
             ],
         });
+        peer.onicecandidate = (event) => {
+            if (event.candidate) {
+                console.log("New ICE Candidate:", event.candidate.candidate);
+            }
+        };
         const desc = new webrtc.RTCSessionDescription(offer);
         await peer.setRemoteDescription(desc);
         senderStream.getTracks().forEach(track => peer.addTrack(track, senderStream));
