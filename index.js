@@ -8,10 +8,11 @@ let senderStream;
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cors())
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/index.html");
+});
 app.post("/consumer", async (req, res) => {
     try {
-        console.log("consumer", req.body);
-
         const sdp = req.body.offer;
         const offer = {
             sdp: sdp,
@@ -37,9 +38,6 @@ app.post("/consumer", async (req, res) => {
         res.json(peer.localDescription);
 
     } catch (error) {
-        console.log(error);
-        console.log("*************");
-        console.log(error.message);
         res.status(500).send(error.message);
     }
 });
@@ -85,4 +83,4 @@ function handleTrackEvent(e, peer) {
 };
 
 
-app.listen(5000, () => console.log('server started'));
+app.listen(5000, () => console.log('server started on 5000'));
