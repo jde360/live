@@ -58,9 +58,9 @@ app.post("/consumer", async (req, res) => {
 
 app.post('/broadcast', async (req, res) => {
     try {
-        console.log("ASTROLOGER\n::::::::::::::::::::::::::::::::\n", sdp);
 
         const sdp = req.body.offer;
+        console.log("ASTROLOGER\n::::::::::::::::::::::::::::::::\n", sdp);
         const offer = {
             sdp: sdp,
             type: "offer",
