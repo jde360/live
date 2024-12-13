@@ -138,9 +138,13 @@ app.post("/consumer", async (req, res) => {
             return res.status(404).json({ error: "Broadcast not found" });
         }
 
-        console.log("CONSUMER\n::::::::::::::::::::::::::::::::\n");
+        console.log(
+            "CONSUMER\n::::::::::::::::::::::::::::::::\n Broadcast ID:",
+            broadcastId
+        );
 
         const senderStream = broadcasters.get(broadcastId);
+
         const peer = new webrtc.RTCPeerConnection({
             iceServers: [
                 {
@@ -154,11 +158,11 @@ app.post("/consumer", async (req, res) => {
                         'turn:3.111.40.187:3478', // TURN over UDP
                         'turns:3.111.40.187:5349' // TURN over TLS
                     ],
-                    username: 'jiturn',
-                    credential: 'jiturnpass',
+                    'username': 'jiturn',
+                    'credential': 'jiturnpass',
                 }
             ],
-            iceTransportPolicy: "relay",
+            iceTransportPolicy: "all",
         });
 
         peer.onicecandidate = (event) => {
@@ -184,7 +188,8 @@ app.post('/broadcast', async (req, res) => {
     try {
         const { offer, broadcastId } = req.body;
 
-        console.log("BROADCAST\n::::::::::::::::::::::::::::::::\n");
+        console.log("BROADCAST\n::::::::::::::::::::::::::::::::\nBroadcast ID:",
+            broadcastId);
 
         const peer = new webrtc.RTCPeerConnection({
             iceServers: [
@@ -199,29 +204,24 @@ app.post('/broadcast', async (req, res) => {
                         'turn:3.111.40.187:3478', // TURN over UDP
                         'turns:3.111.40.187:5349' // TURN over TLS
                     ],
-                    username: 'jiturn',
-                    credential: 'jiturnpass',
+                    'username': 'jiturn',
+                    'credential': 'jiturnpass',
                 }
             ],
-            iceTransportPolicy: "relay",
+            iceTransportPolicy: "all",
         });
-
         peer.ontrack = (e) => {
             broadcasters.set(broadcastId, e.streams[0]); // Save broadcaster's stream
         };
-
         peer.onicecandidate = (event) => {
             if (event.candidate) {
                 console.log("New ICE Candidate:", event.candidate.candidate);
             }
         };
-
         const desc = new webrtc.RTCSessionDescription({ sdp: offer, type: "offer" });
         await peer.setRemoteDescription(desc);
-
         const answer = await peer.createAnswer();
         await peer.setLocalDescription(answer);
-
         res.json(peer.localDescription);
     } catch (error) {
         console.error(error);
