@@ -153,16 +153,16 @@ app.post("/consumer", async (req, res) => {
                         'stun:stun2.l.google.com:19302'
                     ]
                 },
-                // {
-                //     urls: [
-                //         'turn:3.111.40.187:3478', // TURN over UDP
-                //         'turns:3.111.40.187:5349' // TURN over TLS
-                //     ],
-                //     'username': 'jiturn',
-                //     'credential': 'jiturnpass',
-                // }
+                {
+                    urls: [
+                        'turn:3.111.40.187:3478', // TURN over UDP
+                        'turns:3.111.40.187:5349' // TURN over TLS
+                    ],
+                    'username': 'jiturn',
+                    'credential': 'jiturnpass',
+                }
             ],
-            // iceTransportPolicy: "all",
+            iceTransportPolicy: "all",
         });
 
         peer.onicecandidate = (event) => {
@@ -199,16 +199,16 @@ app.post('/broadcast', async (req, res) => {
                         'stun:stun2.l.google.com:19302'
                     ]
                 },
-                // {
-                //     urls: [
-                //         'turn:3.111.40.187:3478', // TURN over UDP
-                //         'turns:3.111.40.187:5349' // TURN over TLS
-                //     ],
-                //     'username': 'jiturn',
-                //     'credential': 'jiturnpass',
-                // }
+                {
+                    urls: [
+                        'turn:3.111.40.187:3478', // TURN over UDP
+                        'turns:3.111.40.187:5349' // TURN over TLS
+                    ],
+                    'username': 'jiturn',
+                    'credential': 'jiturnpass',
+                }
             ],
-            // iceTransportPolicy: "all",
+            iceTransportPolicy: "all",
         });
         peer.ontrack = (e) => {
             broadcasters.set(broadcastId, e.streams[0]); // Save broadcaster's stream
