@@ -120,7 +120,9 @@ var cors = require('cors');
 const app = express();
 const webrtc = require("wrtc");
 
-const broadcasters = new Map(); // Store broadcaster streams by broadcastId
+// const broadcasters = new Map(); // Store broadcaster streams by broadcastId
+
+let broadcasts = {}; //{broadcastId: stream}
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -134,17 +136,13 @@ app.post("/consumer", async (req, res) => {
     try {
         const { offer, broadcastId } = req.body;
 
-        if (!broadcasters.has(broadcastId)) {
+        if (!broadcasts[broadcastId]) {
             return res.status(404).json({ error: "Broadcast not found" });
         }
 
-        console.log(
-            "CONSUMER\n::::::::::::::::::::::::::::::::\n Broadcast ID:",
-            broadcastId
-        );
-        console.log("---------------------------", broadcasters);
+        console.log("---------------------------\n", broadcasts);
 
-        const senderStream = broadcasters.get(broadcastId);
+        const senderStream = broadcasts[broadcastId];
 
         const peer = new webrtc.RTCPeerConnection({
             iceServers: [
@@ -189,8 +187,6 @@ app.post('/broadcast', async (req, res) => {
     try {
         const { offer, broadcastId } = req.body;
 
-        console.log("BROADCAST\n::::::::::::::::::::::::::::::::\nBroadcast ID:",
-            broadcastId);
 
         const peer = new webrtc.RTCPeerConnection({
             iceServers: [
@@ -212,7 +208,10 @@ app.post('/broadcast', async (req, res) => {
             iceTransportPolicy: "all",
         });
         peer.ontrack = (e) => {
-            broadcasters.set(broadcastId, e.streams[0]); // Save broadcaster's stream
+            // Save broadcaster's stream
+            broadcasts[broadcastId] = e.streams[0];
+
+
         };
         peer.onicecandidate = (event) => {
             if (event.candidate) {
@@ -223,7 +222,8 @@ app.post('/broadcast', async (req, res) => {
         await peer.setRemoteDescription(desc);
         const answer = await peer.createAnswer();
         await peer.setLocalDescription(answer);
-        console.log("-----------------------", broadcasters);
+        console.log("---------------------------\n", broadcasts);
+
 
         res.json(peer.localDescription);
     } catch (error) {
