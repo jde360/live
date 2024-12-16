@@ -48,11 +48,7 @@ app.post("/consumer", async (req, res) => {
             iceTransportPolicy: "all",
         });
 
-        peer.onicecandidate = (event) => {
-            if (event.candidate) {
-                console.log("New ICE Candidate:", event.candidate.candidate);
-            }
-        };
+
         senderStream.getTracks().forEach((track) => peer.addTrack(track, senderStream));
 
         const desc = new webrtc.RTCSessionDescription({ sdp: offer, type: "offer" });
@@ -99,11 +95,7 @@ app.post('/broadcast', async (req, res) => {
                 stream: event.streams[0]
             };
         };
-        peer.onicecandidate = (event) => {
-            if (event.candidate) {
-                console.log("New ICE Candidate:", event.candidate.candidate);
-            }
-        };
+
         const desc = new webrtc.RTCSessionDescription({ sdp: offer, type: "offer" });
         await peer.setRemoteDescription(desc);
         const answer = await peer.createAnswer();
