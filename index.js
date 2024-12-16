@@ -21,6 +21,7 @@ app.post("/consumer", async (req, res) => {
         const { offer, broadcastId } = req.body;
 
         if (!broadcasts[broadcastId]) {
+            console.log("astrologer not live");
             return res.status(404).json({ error: "Broadcast not found" });
         }
 
@@ -60,6 +61,7 @@ app.post("/consumer", async (req, res) => {
 
         const answer = await peer.createAnswer();
         await peer.setLocalDescription(answer);
+        console.log("----------CONSUMER-----------------\n", broadcasts);
 
         res.json(peer.localDescription);
     } catch (error) {
@@ -106,7 +108,7 @@ app.post('/broadcast', async (req, res) => {
         await peer.setRemoteDescription(desc);
         const answer = await peer.createAnswer();
         await peer.setLocalDescription(answer);
-        console.log("---------------------------\n", broadcasts);
+        console.log("----------PRODUCER-----------------\n", broadcasts);
 
 
         res.json(peer.localDescription);
