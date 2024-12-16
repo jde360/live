@@ -142,6 +142,7 @@ app.post("/consumer", async (req, res) => {
             "CONSUMER\n::::::::::::::::::::::::::::::::\n Broadcast ID:",
             broadcastId
         );
+        console.log("---------------------------", broadcasters);
 
         const senderStream = broadcasters.get(broadcastId);
 
@@ -222,6 +223,8 @@ app.post('/broadcast', async (req, res) => {
         await peer.setRemoteDescription(desc);
         const answer = await peer.createAnswer();
         await peer.setLocalDescription(answer);
+        console.log("-----------------------", broadcasters);
+
         res.json(peer.localDescription);
     } catch (error) {
         console.error(error);
