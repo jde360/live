@@ -112,6 +112,9 @@ app.post('/broadcast', async (req, res) => {
 app.delete("/broadcast/:id", (req, res) => {
     const broadcastId = req.params.id;
     console.log("broadcastId::::::::::", broadcastId);
+    console.log("broadcasts::::::::::", broadcasts);
+    console.log("data::::::::::", broadcasts[broadcastId]);
+
     if (broadcasts[broadcastId]) {
         broadcasts[broadcastId].peer.close();
         delete broadcasts[broadcastId];
