@@ -109,5 +109,15 @@ app.post('/broadcast', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+app.delete("/broadcast/:broadcastId", (req, res) => {
+    const broadcastId = req.params.broadcastId;
+    if (broadcasts[broadcastId]) {
+        broadcasts[broadcastId].peer.close();
+        delete broadcasts[broadcastId];
+        res.status(200).send("Broadcast deleted");
+    } else {
+        res.status(404).send("Broadcast not found");
+    }
+});
 
 app.listen(5000, () => console.log('Server started on 5000'));
