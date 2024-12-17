@@ -109,14 +109,15 @@ app.post('/broadcast', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-app.delete("/broadcast/:broadcastId", (req, res) => {
-    const broadcastId = req.params.broadcastId;
+app.delete("/broadcast/:id", (req, res) => {
+    const broadcastId = req.params.id;
+    console.log("broadcastId::::::::::", broadcastId);
     if (broadcasts[broadcastId]) {
         broadcasts[broadcastId].peer.close();
         delete broadcasts[broadcastId];
         res.status(200).send("Broadcast deleted");
     } else {
-        res.status(404).send("Broadcast not found");
+        res.status(400).send("Broadcast not found");
     }
 });
 
