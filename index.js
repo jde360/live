@@ -29,24 +29,15 @@ app.post("/consumer", async (req, res) => {
         const senderStream = broadcasts[broadcastId].stream;
 
         const peer = new webrtc.RTCPeerConnection({
-            iceServers: [
-                {
-                    urls: [
-                        'stun:stun1.l.google.com:19302',
-                        'stun:stun2.l.google.com:19302'
-                    ]
-                },
-                {
-                    urls: [
-                        'turn:3.111.40.187:3478', // TURN over UDP
-                        'turns:3.111.40.187:5349' // TURN over TLS
-                    ],
-                    'username': 'jiturn',
-                    'credential': 'jiturnpass',
-                }
-            ],
-            iceTransportPolicy: "all",
-        });
+      'iceServers': [
+        {
+          'urls': ['turn:62.72.4.3.223:3478', 'turns:62.72.43.223:5349'],
+          'username': 'JIUser',
+          'credential': 'JIPass',
+        }
+      ],
+      'iceTransportPolicy': 'all',
+    });
 
 
         senderStream.getTracks().forEach((track) => peer.addTrack(track, senderStream));
